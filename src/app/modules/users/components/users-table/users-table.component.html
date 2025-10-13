@@ -1,0 +1,123 @@
+<div class="mt-8 mb-6">
+  <h2 class="text-2xl font-semibold text-white mb-1">Lista de Usuarios</h2>
+  <p class="text-gray-400 text-sm">
+    Aquí puedes ver todos los usuarios registrados, buscarlos, editarlos o eliminarlos.
+  </p>
+</div>
+<div class="justify-center items-center relative overflow-x-auto rounded-lg">
+    <div class="flex justify-between items-center mb-4">
+        <div>
+            <div class="relative">
+                <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                </svg>
+                <input
+                    [formControl]="searchInput"
+                    type="text"
+                    placeholder="Buscar usuarios..."
+                    class="w-80 pl-10 pr-3 py-2 text-sm rounded-lg border bg-transparent text-white focus:ring-blue-500 focus:border-blue-500"
+                    />
+            </div>
+        </div>
+        <div class="flex items-center gap-3">
+            @if (itemsSelected.size > 0) {
+            <span class="text-sm text-gray-300">{{itemsSelected.size}} seleccionado(s)</span>
+            }
+            <button
+            (click)="openPopUp()"
+            [disabled]="itemsSelected.size === 0"
+            [class.opacity-50]="itemsSelected.size === 0"
+            class="p-2 rounded-lg hover:bg-red-50/10 transition disabled:cursor-not-allowed"
+            [attr.aria-label]="'Eliminar ' + itemsSelected.size + ' usuario(s)'"
+            >
+            <svg
+            class="w-6 h-6"
+            [class.text-red-500]="itemsSelected.size > 0"
+            [class.text-gray-500]="itemsSelected.size === 0"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+            >
+            <path fill-rule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd"/>
+            </svg>
+            </button>
+        </div>
+    </div>
+    <table class="w-full text-sm text-left text-white">
+        <thead class="uppercase bg-blue-900/30">
+            <tr>
+                <th class="p-4">
+                    <input
+                    [checked]="isAllSelected()"
+                    [indeterminate]="isIndeterminate()"
+                    (change)="toggleSelectAll()"
+                    type="checkbox"
+                    class="w-4 h-4 rounded-sm text-blue-600 focus:ring-blue-500"
+                    aria-label="Seleccionar todos"
+                    />
+                </th>
+                <th class="px-4 py-3">#</th>
+                <th class="px-6 py-3">Usuario</th>
+                <th class="px-6 py-3">Edad</th>
+                <th class="px-6 py-3">Correo</th>
+                <th class="px-6 py-3">Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (filteredUsers.length !=0 && filteredUsers) {
+            @for (user of filteredUsers || users; track user.id; let idx = $index) {
+            <tr class="bg-white/10 hover:bg-blue-600/10 transition">
+                <td class="p-4">
+                    <input
+                    [checked]="isSelected(user.id)"
+                    (change)="toggleSelect(user.id)"
+                    type="checkbox"
+                    class="w-4 h-4 rounded-sm text-blue-600 focus:ring-blue-500"
+                    />
+                </td>
+                <td class="px-4 py-3 font-medium text-white">{{ idx + 1 }}</td>
+                <td class="px-6 py-3">{{ user.nombre }}</td>
+                <td class="px-6 py-3">{{ user.edad }}</td>
+                <td class="px-6 py-3">{{ user.correo }}</td>
+                <td class="px-6 py-3">
+                    <button
+                    (click)="openEditModal(user)"
+                    class="border rounded-lg px-3 py-1 text-white hover:bg-blue-600/20"
+                    [attr.aria-label]="'Editar ' + user.nombre"
+                    >
+                    Editar
+                    </button>
+                </td>
+            </tr>
+            }
+            } @else {
+            <tr>
+                <td colspan="6" class="text-center py-8 text-gray-400">
+                    No hay información para mostrar
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    <div class="mt-6">
+        <button
+            (click)="openCreateModal()"
+            class="flex items-center gap-2 text-white bg-white/10 rounded-lg px-5 py-2.5 text-sm"
+            >
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                    fill-rule="evenodd"
+                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                    clip-rule="evenodd"
+                    />
+            </svg>
+            Agregar Usuario
+        </button>
+    </div>
+</div>
+@if (isOpenPopUp) {
+<app-users-pop-up (onClose)="closePopUp()" (onDelete)="deleteItems()"></app-users-pop-up>
+}
+@if (isOpenModal) {
+<app-modal-user-form [userForUpdate]="updateUser" (modalClosed)="closeModal()"></app-modal-user-form>
+}
