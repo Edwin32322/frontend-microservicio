@@ -1,0 +1,102 @@
+<div 
+    id="crud-modal" 
+    class="fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-gray-900/70"
+    >
+    <div class="w-full max-w-md p-4">
+        <div class="bg-blue-800/80 rounded-lg shadow-md">
+            <div class="flex items-center justify-between p-4 border-b border-blue-300">
+                <h3 class="text-lg font-semibold text-white">
+                    {{ userForUpdate ? 'Editar Usuario' : 'Crear Usuario' }}
+                </h3>
+                <button 
+                    (click)="onClose()" 
+                    type="button" 
+                    class="text-gray-300 hover:text-white transition-colors"
+                    >
+                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path 
+                            stroke="currentColor" 
+                            stroke-linecap="round" 
+                            stroke-linejoin="round" 
+                            stroke-width="2" 
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                            />
+                    </svg>
+                </button>
+            </div>
+            <form 
+            (ngSubmit)="onSubmit()" 
+            [formGroup]="formGroup" 
+            class="p-4 space-y-4"
+            >
+            <div>
+                <label for="email" class="block mb-1 text-sm font-medium text-white">Correo Electrónico</label>
+                <input  
+                    formControlName="email" 
+                    type="email" 
+                    id="email"  
+                    placeholder="nombre@ejemplo.com"
+                    required 
+                    class="w-full p-2.5 text-sm rounded-md border focus:ring-blue-400 focus:border-blue-400 bg-transparent text-white"
+                    [ngClass]="{
+                    'border-red-500 bg-red-50 text-red-900': isFieldInvalid('email'),
+                    'border-gray-300 bg-gray-50 text-gray-900': !isFieldInvalid('email')
+                    }"
+                    />
+                <p *ngIf="isFieldInvalid('email')" class="mt-1 text-sm text-red-500">
+                    Por favor ingresa un correo válido
+                </p>
+            </div>
+            <div>
+                <label for="name" class="block mb-1 text-sm font-medium text-white">Nombre</label>
+                <input 
+                    formControlName="name" 
+                    type="text" 
+                    id="name"
+                    placeholder="Augusto"
+                    required
+                    class="w-full p-2.5 text-sm rounded-md border focus:ring-blue-400 focus:border-blue-400 bg-transparent text-white"
+                    [ngClass]="{
+                    'border-red-500 bg-red-50 text-red-900': isFieldInvalid('name'),
+                    'border-gray-300 bg-gray-50 text-gray-900': !isFieldInvalid('name')
+                    }"
+                    />
+                <p *ngIf="isFieldInvalid('name')" class="mt-1 text-sm text-red-500">
+                    El nombre debe tener al menos 3 caracteres
+                </p>
+            </div>
+            <div>
+                <label for="age" class="block mb-1 text-sm font-medium text-white">Edad</label>
+                <input 
+                    formControlName="age" 
+                    type="number" 
+                    id="age" 
+                    placeholder="20" 
+                    required 
+                    class="w-full p-2.5 text-sm rounded-md border focus:ring-blue-400 focus:border-blue-400 bg-transparent text-white"
+                    [ngClass]="{
+                    'border-red-500 bg-red-50 text-red-900': isFieldInvalid('age'),
+                    'border-gray-300 bg-gray-50 text-gray-900': !isFieldInvalid('age')
+                    }"
+                    />
+                <p *ngIf="isFieldInvalid('age')" class="mt-1 text-sm text-red-500">
+                    Debes estar entre un rango de 18 años a 120 años
+                </p>
+            </div>
+            <button 
+                type="submit" 
+                class="w-full flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-800 text-white font-medium rounded-md text-sm px-5 py-2.5 transition-colors"
+                >
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path 
+                        fill-rule="evenodd" 
+                        d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" 
+                        clip-rule="evenodd"
+                        />
+                </svg>
+                {{ userForUpdate ? 'Editar' : 'Crear' }}
+            </button>
+            </form>
+        </div>
+    </div>
+</div>
