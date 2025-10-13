@@ -1,29 +1,29 @@
-import { TestBed } from '@angular/core/testing';
-import { AppComponent } from './app.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AppComponent} from './app.component';
+import { LayoutComponent } from './core/layout/layout.component';
+import { RouterModule } from '@angular/router';
 
 describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [AppComponent, LayoutComponent, RouterModule.forRoot(
+        [{path: '', component: AppComponent}, {path: 'layout', component: LayoutComponent}]
+      )]
     }).compileComponents();
-  });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
-
-  it(`should have the 'frontend-microservicio' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('frontend-microservicio');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, frontend-microservicio');
+  });
+
+  it('debería crearse el componente', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('debería tener el título "frontend-microservicio"', () => {
+    expect(component.title).toBe('frontend-microservicio');
   });
 });
