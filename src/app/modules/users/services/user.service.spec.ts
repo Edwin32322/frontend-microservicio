@@ -52,7 +52,7 @@ describe('UserService', () => {
 
     const req = httpMock.expectOne(apiUrl + 'api/data/1');
     expect(req.request.method).toBe('PUT');
-    expect(req.request.body).toEqual({ userPayload: payload });
+    expect(req.request.body).toEqual(payload );
     req.flush({status: "success", data: mockUser});
   });
 
@@ -66,7 +66,7 @@ describe('UserService', () => {
 
     const req = httpMock.expectOne(apiUrl + 'api/data');
     expect(req.request.method).toBe('POST');
-    expect(req.request.body).toEqual({ userPayload: payload });
+    expect(req.request.body).toEqual(payload);
     req.flush({status: "success", data: mockUser});
   });
 
