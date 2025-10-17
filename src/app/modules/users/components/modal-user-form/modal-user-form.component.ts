@@ -57,7 +57,7 @@ export class ModalUserFormComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error guardando usuario:', error.message);
-          alert(error.error.message);
+          alert(error?.error?.message || error?.mesagge || "Error al guardar el usuario");
         }
       });
       

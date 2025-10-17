@@ -94,7 +94,7 @@ describe('ModalUserFormComponent', () => {
   it('debería mostrar alert en caso de error al guardar', () => {
     fixture.detectChanges();
     spyOn(window, 'alert');
-    userService.createUser.and.returnValue(throwError(() => new Error('Error simulando')));
+    userService.createUser.and.returnValue(throwError(() => new Error('Error al guardar el usuario')));
 
     component.formGroup.setValue({ name: 'Juan', email: 'juan@test.com', age: '28' });
     component.onSubmit();
